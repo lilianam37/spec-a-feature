@@ -2182,6 +2182,65 @@ Report generating algorithm: N/A
 **Open Issues:**
 
 ## **Peer Evaluation**
+**UC ID and Name:** UC-EVA-send-reminder-to-non-submitters: The instructor sends a reminder to students who have not submitted a peer evaluation
+**Created By:**
+**Date Created:**
+**Primary Actor:** instructor
+**Secondary Actors:**
+**Trigger:** The instructor indicates that he wants to send a reminder to students who have not submitted a peer evaluation for the previous week.
+**Description:** The instructor wants to remind students who are eligible to submit a peer evaluation but have not yet submitted one, so that those students are prompted to complete the required evaluation before the submission window closes.
+
+**Preconditions:**
+- PRE-1. The instructor is logged into the system.
+- PRE-2. The instructor is assigned to the course section for which the peer evaluation is being reviewed (BR-section-scoped-access).
+- PRE-3. The peer evaluation submission window for the previous week is open (BR-evaluation-submission-window).
+- PRE-4. The previous week is one of the course section's active weeks (BR-active-weeks).
+
+
+**Postconditions:**
+- POST-1. A reminder is sent to each selected eligible student who has not submitted the peer evaluation and has not received a reminder for the same evaluation within the previous 24 hours (BR-reminder-frequency).
+- POST-2. The system records that the reminder was sent to each student for whom the email was successfully sent.
+
+**Main Success Scenario:**
+1. The instructor indicates that she wants to send reminders for the previous week's peer evaluation.
+2. The system identifies the students in the instructor's course section who are eligible to submit a peer evaluation but have not submitted one for the previous week (BR-section-scoped-access, BR-team-assignment-required, BR-evaluation-submission-window).
+3. The system excludes students who have already submitted the peer evaluation.
+4. The system displays the students who are eligible to receive a reminder and have not received a reminder for the same peer evaluation within the previous 24 hours (BR-reminder-frequency).
+5. The instructor selects the students to receive a reminder.
+6. The system sends a peer-evaluation submission reminder to each selected student.
+7. The system records each successfully sent reminder.
+8. Use case ends.
+
+**Extensions:**
+- **1a. The peer evaluation submission window is closed:** (e.g., the current week is the section's first active week, whose preceding week is inactive):
+  - 1a1. The system does not allow the instructor to send a manual reminder because manual reminders may only be sent while the peer evaluation submission window is open (BR-evaluation-submission-window).
+  - 1a2. The system informs the instructor that the peer evaluation submission window has closed.
+  - 1a3. Use case ends.
+- **1b. The previous week is not one of the course section's active weeks:**
+  - 1b1. The system does not identify students as non-submitters for that week (BR-active-weeks).
+  - 1b2. The system informs the instructor that the peer evaluation does not apply to that week.
+  - 1b3. Use case ends.
+- **2a. The student is not assigned to a team:**
+  - 2a1. The system excludes the student from the list of non-submitters because the student is not eligible to submit a peer evaluation (BR-team-assignment-required).
+  - 2a2. The system continues with step 2 for the remaining students.
+- **2b. A student has already submitted the peer evaluation:**
+  - 2b1. The system excludes the student from the list of non-submitters.
+  - 2b2. The system continues with step 2 for the remaining students.
+- **4a. A reminder was sent to a student for the same peer evaluation within the previous 24 hours:**
+  - 4a1. The system excludes the student from the list of students eligible to receive a reminder (BR-reminder-frequency)
+  - 4a2. The system continues with step 4 for the remaining students.
+- **5a. The instructor does not select any students:**
+  - 5a1. The system does not send any reminders.
+  - 5a2. Use case ends.
+- **6a. A student submits the peer evaluation after the reminder list is displayed but before the reminder is sent:**
+  - 6a1. The system verifies that the student still has not submitted the peer evaluation before sending the reminder.
+  - 6a2. If the student has submitted the evaluation, the system does not send the reminder to that student.
+
+**Priority:** High
+**Frequency of Use:** Approximately 1-2 uses per week per instructor during peer-evaluation submission
+**Business Rules:** BR-team-scoped-access (the student evaluates the members of a team she belongs to, and no other team), BR-team-assignment-required (only a student assigned to a team submits one), BR-active-weeks, BR-evaluation-editable-until-close, BR-evaluation-submission-window, BR-evaluation-private-comment
+
+**Associated Information:**
 
 ### **UC-EVA-submit-evaluation: The student submits a peer evaluation for the previous week**
 
